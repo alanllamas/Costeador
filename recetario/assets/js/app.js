@@ -21,11 +21,25 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 		$locationProvider.html5Mode(true);
 		
 	});
+	$(function(){ 
+	    $('.nav-pills a').on('click', function (e) {
+	        e.preventDefault();
+	        $(this).tab('show');
 
-	app.controller('MateriasController', function ($scope, $location) {
+	    });  
+	    $('.nav-tabs a').on('click', function (e) {
+	        e.preventDefault();
+	        $(this).tab('show');
+	    }); 
+	});
 
-		
-	    $scope.materias = [];
+	app.controller('MateriasController', function ($scope, $location, $http) {
+
+		$scope.materias;
+	    $http.get('http://localhost:1337/materia').then(function (data) {
+	    	
+	    	$scope.materias = data;
+	    });
 		$scope.meds = ["gr","ml","pza"];
 		$scope.materia1 = "";
 		$scope.cantidad1 = 0;
@@ -38,7 +52,7 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 			if ($scope.materia1 && $scope.cantidad1 && $scope.medicion1 && $scope.precio1 != "") {
 	    		$scope.materia = {};
 
-	    		$scope.materia.materia = $scope.materia1;
+	    		$scope.materia.nombre= $scope.materia1;
 	    		$scope.materia.cantidad = $scope.cantidad1;
 	    		$scope.materia.medicion = $scope.medicion1;
 	    		$scope.materia.precio = $scope.precio1;
@@ -54,12 +68,15 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 
 	    		// evita que haya entradas iguales y las agrega a materias
 	    		if ($scope.materias.length == 0) {
-	    			$scope.materias.push($scope.materia);
+	    			
+	    			$http.post('http://localhost:1337/materia', $scope.materia)
+
+	    			// $scope.materias.push($scope.materia);
 	    		}else{
 	    			counter = 0;
 		    		for (var i = 0; i < $scope.materias.length; i++) {
 		    		
-		    			if ($scope.materia.materia == $scope.materias[i].materia) {
+		    			if ($scope.materia.nombre == $scope.materias[i].nombre) {
 		    				
 		    				counter++;
 		    			};
@@ -67,7 +84,10 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 		    		};
 		    			
 		    		if (counter == 0) {
-						$scope.materias.push($scope.materia);
+						
+		    			$http.post('http://localhost:1337/materia', $scope.materia)
+
+						// $scope.materias.push($scope.materia);
 
 		    		};
 	    		};

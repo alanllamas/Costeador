@@ -35,7 +35,7 @@ var jsFilesToInject = [
   'js/**/*.js',
 
   // bower components
-  'bower_components/**/*.js'
+  // 'bower_components/**/*.js'
 
   // Use the "exclude" operator to ignore files
   // '!js/ignore/these/files/*.js'

@@ -21,7 +21,7 @@
 
 		<div class="tab-content" id="mainContainer">
 			<!-- primer panel MAterias Primas-->
-			<div id="materiaprima" class="tab-pane fade in active"  >
+			<div id="materiaprima" class="tab-pane fade in active" ng-controller="MateriasController"  >
 				<div class="panel panel-primary">
 					
 
@@ -56,12 +56,14 @@
 								</div>
 
 								<div class="form-group">
-
+									
 									<label for="medicion1" class="col-lg-3 control-label">Medicion</label>
 
 									<div class="col-lg-9">
-										<select name="medicion" id="medicion1" ng-options="med for med in meds" ng-model="medicion1">
-											
+										<select name="medicion" id="medicion1" ng-model="medicion1">
+											<option value="gr" selected>gr</option>
+											<option value="ml">ml</option>
+											<option value="pza">pza</option>
 										</select>
 										
 									</div>
@@ -107,10 +109,12 @@
 										<th>Precio</th>
 									</tr>
 								</thead>
+
 								<tbody ng-repeat="materia in materias" >
 									<tr>
+										{{materia}}
 										<td>{{materia.id}}</td>
-										<td>{{materia.materia}}</td>
+										<td>{{materia.nombre}}</td>
 										<td>{{materia.cantidad + " " + materia.medicion}}</td>
 										<td>{{materia.precio | currency}}</td>
 									</tr>
@@ -409,18 +413,6 @@
 <script src="bower_components/angular-resource/angular-resource.js"></script>
 <script src="bower_components/angular-route/angular-route.js"></script>
 <script src="js/app.js" ></script>
-<script>
-	$(function(){ 
-	    $('.nav-pills a').on('click', function (e) {
-	        e.preventDefault();
-	        $(this).tab('show');
 
-	    });  
-	    $('.nav-tabs a').on('click', function (e) {
-	        e.preventDefault();
-	        $(this).tab('show');
-	    }); 
-	});
-</script>
 
 </html>
