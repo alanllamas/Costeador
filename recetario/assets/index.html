@@ -23,7 +23,7 @@
 			<!-- primer panel MAterias Primas-->
 			<div id="materiaprima" class="tab-pane fade in active" ng-controller="MateriasController"  >
 				<div class="panel panel-primary">
-					
+
 
 					<div class="panel-heading">
 						<h3 class="panel-title">Materias Primas</h3>
@@ -56,7 +56,7 @@
 								</div>
 
 								<div class="form-group">
-									
+
 									<label for="medicion1" class="col-lg-3 control-label">Medicion</label>
 
 									<div class="col-lg-9">
@@ -65,7 +65,7 @@
 											<option value="ml">ml</option>
 											<option value="pza">pza</option>
 										</select>
-										
+
 									</div>
 
 								</div>
@@ -78,7 +78,7 @@
 										<input  ng-model='pesopza' type="text">
 									</div>
 
-								</div>		
+								</div>
 
 								<div class="form-group">
 
@@ -99,7 +99,7 @@
 						</form>
 						<div class="col-lg-8">
 							<h4>Estos son los ingredientes disponibles para crear tus recetas</h4>
-				
+
 							<table class="table table-striped">
 								<thead>
 									<tr>
@@ -112,19 +112,18 @@
 
 								<tbody ng-repeat="materia in materias" >
 									<tr>
-										{{materia}}
 										<td>{{materia.id}}</td>
 										<td>{{materia.nombre}}</td>
 										<td>{{materia.cantidad + " " + materia.medicion}}</td>
 										<td>{{materia.precio | currency}}</td>
 									</tr>
 								</tbody ng-repeat-end >
-								
+
 							</table>
 						</div>
 					</div>
 				</div>
-				
+
 			</div>
 
 			<!-- segundo panel Nueva Receta-->
@@ -134,7 +133,7 @@
 						<h3 class="panel-title">Nueva Receta</h3>
 					</div>
 					<div class="panel-body">
-											
+
 						<ul class="nav nav-tabs">
 							<li data-toggle="tab" class="active pull-left"><a href="#receta">Crear Receta</a></li>
 							<li data-toggle="tab" class=" pull-left"><a href="#base">Crear Receta Base</a></li>
@@ -144,7 +143,7 @@
 								<form class="form-horizontal">
 									<fieldset class="col-lg-4">
 										<legend>Agrega un nuevo ingrediente a tu receta</legend>
-	
+
 										<div >
 											<div class="form-group ">
 												<label for="ingrediente" class="col-lg-3 control-label">Ingrediente</label>
@@ -152,7 +151,7 @@
 												<div class="col-lg-9">
 
 													<select ng-model="ingrediente" ng-options="materia.materia for materia in materias" name="Ingrediente" id="ingrediente">
-														
+
 													</select>
 
 												</div>
@@ -168,7 +167,7 @@
 												</div>
 
 											</div>
-												
+
 											<div class="form-group">
 												<div class="col-lg-8 col-lg-offset-4">
 													<button id="agregarIngrediente" class="btn btn-primary">Agregar producto a la receta</button>
@@ -180,8 +179,8 @@
 								</form>
 
 								<div class="col-lg-8">
-									
-									
+
+
 
 											<div class="col-lg-12">
 
@@ -191,9 +190,9 @@
 												<h3 ng-if="recetaNombre != ''" >{{recetaNombre}}</h3>
 											</div>
 
-							
-									
-								
+
+
+
 									<table class="table table-striped pull-left">
 										<thead>
 											<tr>
@@ -204,16 +203,16 @@
 											</tr>
 										</thead>
 										<tbody >
-											
+
 											<tr ng-repeat="ingredientes in receta.ingredientes">
 												<td>{{ingredientes.id}}</td>
 												<td>{{ingredientes.materia}}</td>
 												<td>{{ingredientes.cantidad + " " + ingredientes.medicion}}</td>
-												
+
 												<td>{{ingredientes.precio | currency}}</td>
 											</tr>
 										</tbody>
-										
+
 									</table>
 								<table class="table table-striped pull-left">
 										<thead>
@@ -229,11 +228,11 @@
 												<td>{{receta.id}}</td>
 												<td>{{receta.nombre}}</td>
 												<td>{{receta.cantidad + " gr"}}</td>
-												
+
 												<td>{{receta.costo | currency}}</td>
 											</tr>
 										</tbody>
-										
+
 									</table>
 								</div>
 								<button class="pull-right btn btn-primary"id="agregarReceta">Agregar receta al recetario</button>
@@ -245,12 +244,12 @@
 										<legend>Agrega una receta base a tu recetario</legend>
 
 										<div class="form-group">
-										<!-- debe ser select con las opciones de la base de datos-->								
+										<!-- debe ser select con las opciones de la base de datos-->
 											<label for="ingrediente" class="col-lg-3 control-label">Ingrediente</label>
 
 											<div class="col-lg-9">
 												<select ng-model="ingrediente" ng-options="materia.materia for materia in materias" name="Ingrediente" id="ingrediente1">
-													
+
 												</select>
 
 											</div>
@@ -273,7 +272,7 @@
 
 											<div class="col-lg-9">
 												<select name="medicion2" id="medicion3" ng-options="med for med in meds" ng-model="medicion3">
-														
+
 													</select>
 											</div>
 
@@ -354,7 +353,7 @@
 					</div>
 					<div class="panel-body">
 						<div class="col-lg-6">
-									
+
 							<h3>Recetas</h3>
 							<table class="table table-striped pull-left">
 								<thead>
@@ -374,11 +373,11 @@
 									</tr ng-repeat-end>
 								</tbody>
 							</table>
-								
-								
+
+
 						</div>
 						<div class="col-lg-6">
-									
+
 							<h3>Recetas Base</h3>
 							<table class="table table-striped pull-left">
 								<thead>
@@ -397,7 +396,7 @@
 										<td>$9.00</td>
 									</tr>
 								</tbody>
-								
+
 							</table>
 						</div>
 					</div>

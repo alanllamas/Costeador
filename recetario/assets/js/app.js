@@ -19,26 +19,27 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 				templateUrl: 'views/recetario.html'
 			});
 		$locationProvider.html5Mode(true);
-		
+
 	});
-	$(function(){ 
+	$(function(){
 	    $('.nav-pills a').on('click', function (e) {
 	        e.preventDefault();
 	        $(this).tab('show');
 
-	    });  
+	    });
 	    $('.nav-tabs a').on('click', function (e) {
 	        e.preventDefault();
 	        $(this).tab('show');
-	    }); 
+	    });
 	});
 
 	app.controller('MateriasController', function ($scope, $location, $http) {
 
-		$scope.materias;
-	    $http.get('http://localhost:1337/materia').then(function (data) {
-	    	
-	    	$scope.materias = data;
+
+	    $http.get('http://localhost:1337/materia').then(function (data,err) {
+
+					$scope.materias = data.data;
+
 	    });
 		$scope.meds = ["gr","ml","pza"];
 		$scope.materia1 = "";
@@ -60,32 +61,33 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 
 	    		// le da un peso a la materia prima si se mide por piezas
 	    		if ($scope.materia.medicion == "pza") {
-	    			
+
 	    			$scope.materia.pesopza = $scope.pesopza ;
-	    			console.log($scope.materia);
+
 	    		};
 	    		// fin
 
 	    		// evita que haya entradas iguales y las agrega a materias
 	    		if ($scope.materias.length == 0) {
-	    			
+
 	    			$http.post('http://localhost:1337/materia', $scope.materia)
 
 	    			// $scope.materias.push($scope.materia);
 	    		}else{
 	    			counter = 0;
 		    		for (var i = 0; i < $scope.materias.length; i++) {
-		    		
+
 		    			if ($scope.materia.nombre == $scope.materias[i].nombre) {
-		    				
+
 		    				counter++;
 		    			};
-		    			
+
 		    		};
-		    			
+
 		    		if (counter == 0) {
-						
+
 		    			$http.post('http://localhost:1337/materia', $scope.materia)
+							location.reload(true);
 
 						// $scope.materias.push($scope.materia);
 
@@ -129,7 +131,7 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 
 				// obtiene el precio segun la cantidad del producto
 				$scope.ingre.precio = function () {
-					
+
 					precio = $scope.ingre.cantidad * $scope.ingrediente.precio / $scope.ingrediente.cantidad;
 
 					return precio;
@@ -156,27 +158,27 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 	    			counter = 0;
 
 		    		for (var i = 0; i < $scope.receta.ingredientes.length; i++) {
-		    		
+
 		    			if ($scope.ingre.materia == $scope.receta.ingredientes[i].materia) {
-		    				
+
 		    				counter +=1;
 		    			};
-		    			
+
 		    		};
-		    			
+
 		    		if (counter == 0) {
-						
+
 						ing.push($scope.ingre);
 
 		    		};
-	    			
+
 	    		};
 	    		// fin
 	    		// le da un id a la receta
 		    	$scope.receta.id = $scope.recetas.length + 1 ;
 
 				//suma la cantidad total de la receta
-				
+
 				$scope.receta.cantidad = (function(){
 					var cantidadTotal = 0;
 					for (var i = 0; i < $scope.receta.ingredientes.length; i++) {
@@ -186,7 +188,7 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 							console.log($scope.receta.ingredientes[i].pesopza);
 							cantidad = $scope.receta.ingredientes[i].cantidad * $scope.receta.ingredientes[i].pesopza;
 						}else{
-							
+
 							cantidad = Number($scope.receta.ingredientes[i].cantidad);
 							console.log(typeof(cantidad));
 						};
@@ -205,7 +207,7 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 						costoTotal = 0;
 					for (var i = 0; i < $scope.receta.ingredientes.length; i++) {
 
-							
+
 							console.log($scope.receta.ingredientes[i]);
 							console.log($scope.receta.ingredientes[i].precio);
 							costo += $scope.receta.ingredientes[i].precio;
@@ -230,14 +232,14 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 			}else{
 				counter = 0;
 	    		for (var i = 0; i < $scope.recetas.length; i++) {
-	    		
+
 	    			if ($scope.receta.receta == $scope.recetas[i].receta) {
-	    				
+
 	    				counter++;
 	    			};
-	    			
+
 	    		};
-	    			
+
 	    		if (counter == 0) {
 					$scope.recetas.push($scope.receta);
 
@@ -255,25 +257,25 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 	});
 
 app.controller('myCtrl', function($scope,$location) {
-   
+
 
 	// hace funcionar los tabs y pills
-	$(function(){ 
+	$(function(){
 	    $('.nav-pills a').on('click', function (e) {
 	        e.preventDefault();
 	        $(this).tab('show');
 
-	    });  
+	    });
 	    $('.nav-tabs a').on('click', function (e) {
 	        e.preventDefault();
 	        $(this).tab('show');
-	    }); 
+	    });
 	});
-	$scope.goNext = function (hash) { 
+	$scope.goNext = function (hash) {
 		$location.url(hash);
 	};
 
-	
+
 
 
 });
