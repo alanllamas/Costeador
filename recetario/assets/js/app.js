@@ -1,46 +1,39 @@
 var app = angular.module('myApp', ['ngRoute','ngResource'])
-	.config(function ($routeProvider, $locationProvider) {
-		$routeProvider
-			.when('/', {
-				redirectTo: function(){
-					return '/materias'
-				}
-			})
-			.when('/materias',{
-				controller: 'MateriasController',
-				templateUrl: 'views/materiaprima.html'
-			})
-			.when('/nuevareceta',{
-				controller: 'NuevaRecetaController',
-				templateUrl: 'views/nuevareceta.html'
-			})
-			.when('/recetas' ,{
-				controller: 'myCtrl',
-				templateUrl: 'views/recetario.html'
-			});
-		$locationProvider.html5Mode(true);
+	// .config(function ($routeProvider, $locationProvider) {
+	// 	$routeProvider
+	// 		.when('/', {
+	// 			redirectTo: function(){
+	// 				return '/materias'
+	// 			}
+	// 		})
+	// 		.when('/materias',{
+	// 			controller: 'MateriasController',
+	// 			templateUrl: 'views/materiaprima.html'
+	// 		})
+	// 		.when('/nuevareceta',{
+	// 			controller: 'NuevaRecetaController',
+	// 			templateUrl: 'views/nuevareceta.html'
+	// 		})
+	// 		.when('/recetas' ,{
+	// 			controller: 'myCtrl',
+	// 			templateUrl: 'views/recetario.html'
+	// 		});
+	// 	$locationProvider.html5Mode(true);
+	//
+	// })
+	;
 
-	});
-	$(function(){
-	    $('.nav-pills a').on('click', function (e) {
-	        e.preventDefault();
-	        $(this).tab('show');
 
-	    });
-	    $('.nav-tabs a').on('click', function (e) {
-	        e.preventDefault();
-	        $(this).tab('show');
-	    });
-	});
 
-	app.controller('MateriasController', function ($scope, $location, $http) {
+	app.controller('MateriasController', function ($scope, $rootScope, $location, $http) {
 
 
 	    $http.get('http://localhost:1337/materia').then(function (data,err) {
 
-					$scope.materias = data.data;
+					$rootScope.materias = data.data;
 
 	    });
+		materias = $scope.materias;
 		$scope.meds = ["gr","ml","pza"];
 		$scope.materia1 = "";
 		$scope.cantidad1 = 0;
@@ -71,7 +64,7 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 	    		if ($scope.materias.length == 0) {
 
 	    			$http.post('http://localhost:1337/materia', $scope.materia)
-
+						location.reload(true);
 	    			// $scope.materias.push($scope.materia);
 	    		}else{
 	    			counter = 0;
@@ -85,8 +78,8 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 		    		};
 
 		    		if (counter == 0) {
-
-		    			$http.post('http://localhost:1337/materia', $scope.materia)
+						console.log($scope.materia);
+		    			$http.post('http://localhost:1337/materia', $scope.materia);
 							location.reload(true);
 
 						// $scope.materias.push($scope.materia);
@@ -98,10 +91,12 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 			};
 		});
 	});
-	app.controller('NuevaRecetaController', function  ($scope, $location) {
-	    $scope.recetaNombre="";
-		$scope.recetas = [];
-		$scope.base = [];
+	app.controller('NuevaRecetaController', function  ($scope, $rootScope, $location, $http) {
+
+		$http.get("http://localhost:1337/recetas").then(function(data) {
+			$scope.recetas = data.data;
+
+		})
 		$scope.ingrediente = "";
 		$scope.cantidad2 = 0;
 		$scope.medicion2 = "";
@@ -111,6 +106,7 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 		$scope.receta.ingredientes = [];
 		$scope.receta.costo = 0;
 	 	$scope.receta.cantidad = 0;
+		$scope.receta.tipo = "";
 		// agrega un ingrediente al array receta
 		$('#agregarIngrediente').click(function() {
 			ing = $scope.receta.ingredientes;
@@ -118,7 +114,7 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 
 				$scope.ingre = {};
 				$scope.ingre.id = $scope.receta.ingredientes.length +1 ;
-				$scope.ingre.materia = $scope.ingrediente.materia;
+				$scope.ingre.nombre = $scope.ingrediente.nombre;
 				$scope.ingre.cantidad = $scope.cantidad2;
 				$scope.ingre.medicion = $scope.ingrediente.medicion;
 
@@ -139,15 +135,6 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 				}();
 				// fin
 
-				// si no tiene le agrega nombre a la receta
-				if (!$scope.receta.nombre) {
-			    	if ($scope.recetaNombre != "") {
-			    		$scope.receta.nombre = $scope.recetaNombre;
-			    		$('#Receta').hide();
-			    	};
-				};
-		    	// fin
-
 				// agrega el ingrediente al array de ingredientes en el objeto receta y evita que haya entradas repetidas
 				if ($scope.receta.length == 0) {
 
@@ -159,7 +146,7 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 
 		    		for (var i = 0; i < $scope.receta.ingredientes.length; i++) {
 
-		    			if ($scope.ingre.materia == $scope.receta.ingredientes[i].materia) {
+		    			if ($scope.ingre.nombre == $scope.receta.ingredientes[i].nombre) {
 
 		    				counter +=1;
 		    			};
@@ -182,15 +169,15 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 				$scope.receta.cantidad = (function(){
 					var cantidadTotal = 0;
 					for (var i = 0; i < $scope.receta.ingredientes.length; i++) {
-							console.log($scope.receta.ingredientes[i]);
-							console.log($scope.receta.ingredientes[i].cantidad);
+
+
 						if ($scope.receta.ingredientes[i].medicion == "pza") {
-							console.log($scope.receta.ingredientes[i].pesopza);
+
 							cantidad = $scope.receta.ingredientes[i].cantidad * $scope.receta.ingredientes[i].pesopza;
 						}else{
 
 							cantidad = Number($scope.receta.ingredientes[i].cantidad);
-							console.log(typeof(cantidad));
+
 						};
 						cantidadTotal += cantidad;
 
@@ -207,13 +194,8 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 						costoTotal = 0;
 					for (var i = 0; i < $scope.receta.ingredientes.length; i++) {
 
-
-							console.log($scope.receta.ingredientes[i]);
-							console.log($scope.receta.ingredientes[i].precio);
-							costo += $scope.receta.ingredientes[i].precio;
-							console.log(costo);
-							costoTotal += costo;
-							console.log(costoTotal);
+							costo += $scope.receta.ingredientes[i].precio
+							costoTotal += costo
 
 					};
 					return costoTotal;
@@ -225,15 +207,18 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 
 	    // evita que haya entradas iguales y las agrega al array recetas
 
-	    $('#agregarReceta').click(function(event) {
+	    $('#agregarReceta').click(function() {
+			console.log($scope.receta);
 
 			if ($scope.recetas.length == 0) {
-				$scope.recetas.push($scope.receta);
+				$http.post("http://localhost:1337/recetas", $scope.receta);
+				location.reload(true);
+
 			}else{
 				counter = 0;
 	    		for (var i = 0; i < $scope.recetas.length; i++) {
 
-	    			if ($scope.receta.receta == $scope.recetas[i].receta) {
+	    			if ($scope.receta.nombre == $scope.recetas[i].nombre) {
 
 	    				counter++;
 	    			};
@@ -241,41 +226,36 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 	    		};
 
 	    		if (counter == 0) {
-					$scope.recetas.push($scope.receta);
-
+					$http.post("http://localhost:1337/recetas", $scope.receta);
+					location.reload(true);
 	    		};
 			};
 
 	    });
 	    // fin
 
-		// esconde el input del nombre de la receta
-	    $('#Receta').blur(function(event) {
-	    	event.preventDefault();
-	    });
-	    // fin
 	});
-
-app.controller('myCtrl', function($scope,$location) {
-
-
-	// hace funcionar los tabs y pills
-	$(function(){
-	    $('.nav-pills a').on('click', function (e) {
-	        e.preventDefault();
-	        $(this).tab('show');
-
-	    });
-	    $('.nav-tabs a').on('click', function (e) {
-	        e.preventDefault();
-	        $(this).tab('show');
-	    });
+	app.controller('RecetarioController', function ($scope, $location ,$http ,$rootScope) {
+		$http.get("http://localhost:1337/recetas").then(function(data) {
+			$scope.recetas = data.data;
+		})
 	});
-	$scope.goNext = function (hash) {
-		$location.url(hash);
-	};
+	app.controller('myCtrl', function($scope,$location) {
 
+		// hace funcionar los tabs y pills
+		$(function(){
+		    $('.nav-pills a').on('click', function (e) {
+		        e.preventDefault();
+		        $(this).tab('show');
 
+		    });
+		    $('.nav-tabs a').on('click', function (e) {
+		        e.preventDefault();
+		        $(this).tab('show');
+		    });
+		});
+		$scope.goNext = function (hash) {
+			$location.url(hash);
+		};
 
-
-});
+	});

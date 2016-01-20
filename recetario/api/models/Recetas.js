@@ -6,9 +6,36 @@
 */
 
 module.exports = {
-
+    connection: 'recetarioMongodbServer',
+    schema:'true',
+    tableName: 'recetas',
   attributes: {
-
+      nombre:{
+          type:'string',
+          required:'true',
+          unique:'true'
+      },
+      cantidad:{
+          type:'integer',
+          required:'true'
+      },
+      ingredientes:{
+          type: 'array',
+          required:"true",
+          array:'true'
+      },
+      tipo:{
+          type:'string',
+          required:'true'
+      },
+      id:{
+          type:'integer',
+          required:'true',
+          unique:'true'
+      },
+      costo:{
+          type:'float',
+          required:'true'
+      }
   }
 };
-
