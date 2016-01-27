@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
 	<link rel="stylesheet" href="styles/simplex.css">
 	<link rel="stylesheet" href="styles/style.css">
+	<link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css">
 </head>
 <body >
 	<div ng-controller="myCtrl"  >
@@ -100,19 +101,28 @@
 						<div class="col-lg-8">
 							<h4>Estos son los ingredientes disponibles para crear tus recetas</h4>
 
-							<table class="table table-striped">
+							<input class="form-control" type="text" ng-model="busqueda" name="busqueda" placeholder="Busca un ingrediente">
+
+							<table class="table table striped">
 								<thead>
 									<tr>
-										<th>#</th>
-										<th>Producto</th>
+
+										<th>
+											<a href="#" ng-click="sortReverse = !sortReverse" class="nostyle">
+												Producto
+												<span ng-show="!sortReverse" class="fa fa-caret-down"></span>
+    											<span ng-show="sortReverse" class="fa fa-caret-up"></span>
+
+											</a>
+										</th>
 										<th>Cantidad</th>
 										<th>Precio</th>
 									</tr>
 								</thead>
 
-								<tbody ng-repeat="materia in materias" >
-									<tr>
-										<td>{{materia.id}}</td>
+								<tbody>
+									<tr ng-repeat="materia in materias | orderBy:'+nombre':sortReverse | filter:busqueda" >
+
 										<td>{{materia.nombre}}</td>
 										<td>{{materia.cantidad + " " + materia.medicion}}</td>
 										<td>{{materia.precio | currency}}</td>
@@ -156,7 +166,9 @@
 
 												<select ng-model="receta.tipo"  name="tipo" id="tipo">
 													<option value="base">base</option>
-													<option value="preparacion">preparacion</option>
+													<option value="preparacion">preparación</option>
+													<option value="b/p">base/preparación</option>
+
 												</select>
 
 											</div>
@@ -205,10 +217,11 @@
 
 							<div class="col-lg-8">
 
+
 								<table class="table table-striped pull-left">
 									<thead>
 										<tr>
-											<th>Id</th>
+
 											<th>Producto</th>
 											<th>Cantidad</th>
 											<th>Precio</th>
@@ -216,9 +229,9 @@
 									</thead>
 									<tbody >
 										<tr ng-repeat="ingrediente in receta.ingredientes">
-											<td>{{ingrediente.id}}</td>
+
 											<td>{{ingrediente.nombre}}</td>
-											<td>{{ingrediente.cantidad + " " + ingredientes.medicion}}</td>
+											<td>{{ingrediente.cantidad + " " + ingrediente.medicion}}</td>
 
 											<td>{{ingrediente.precio | currency}}</td>
 										</tr>
@@ -228,7 +241,7 @@
 								<table class="table table-striped pull-left">
 									<thead>
 										<tr>
-											<th>#</th>
+
 											<th>Receta</th>
 											<th>Cantidad</th>
 											<th>Precio</th>
@@ -236,10 +249,9 @@
 									</thead>
 									<tbody >
 										<tr>
-											<td>{{receta.id}}</td>
+
 											<td>{{receta.nombre}}</td>
 											<td>{{receta.cantidad + " gr"}}</td>
-
 											<td>{{receta.costo | currency}}</td>
 										</tr>
 									</tbody>
@@ -261,18 +273,23 @@
 						<div class="col-lg-6">
 
 							<h3>Recetas</h3>
-							<table class="table table-striped pull-left">
+							<input class="form-control" type="text" ng-model="busqueda" name="busqueda" placeholder="Busca una receta">
+							<table class="table pull-left">
 								<thead>
 									<tr>
-										<th>#</th>
-										<th>Receta</th>
+										<th>
+											<a href="#" ng-click="sortReverse = !sortReverse" class="nostyle">
+												Receta
+												<span ng-show="!sortReverse" class="fa fa-caret-down"></span>
+												<span ng-show="sortReverse" class="fa fa-caret-up"></span>
+											</a>
+										</th>
 										<th>Cantidad</th>
 										<th>Precio</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr ng-repeat="r in recetas">
-										<td ng-if="r.tipo == 'preparacion'">{{r.id}}</td>
+									<tr ng-repeat="r in recetas | orderBy:'+r.nombre':sortReverse | filter:busqueda" >
 										<td ng-if="r.tipo == 'preparacion'">{{r.nombre}}</td>
 										<td ng-if="r.tipo == 'preparacion'">{{r.cantidad + " gr"}}</td>
 										<td ng-if="r.tipo == 'preparacion'">{{r.costo | currency}}</td>
@@ -285,21 +302,30 @@
 						<div class="col-lg-6">
 
 							<h3>Recetas Base</h3>
-							<table class="table table-striped pull-left">
+							<input class="form-control" type="text" ng-model="busquedab" name="busqueda" placeholder="Busca una receta">
+							<table class="table  pull-left">
 								<thead>
 									<tr>
-										<th>#</th>
-										<th>Receta</th>
+										<th>
+											<a href="#" ng-click="sortReverse = !sortReverse" class="nostyle">
+												Receta
+												<span ng-show="!sortReverse" class="fa fa-caret-down"></span>
+												<span ng-show="sortReverse" class="fa fa-caret-up"></span>
+											</a>
+										</th>
 										<th>Cantidad</th>
 										<th>Precio</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr ng-repeat="r in recetas">
-										<td ng-if="r.tipo == 'base'">{{r.id}}</td>
+									<tr ng-repeat="r in recetas | orderBy:'+nombre':sortReverse | filter:busquedab" >
 										<td ng-if="r.tipo == 'base'">{{r.nombre}}</td>
 										<td ng-if="r.tipo == 'base'">{{r.cantidad + 'gr'}}</td>
 										<td ng-if="r.tipo == 'base'">{{r.costo | currency}}</td>
+										<!--enlista las recetas compartidas -->
+										<td ng-if="r.tipo == 'b/p'">{{r.nombre}}</td>
+										<td ng-if="r.tipo == 'b/p'">{{r.cantidad + 'gr'}}</td>
+										<td ng-if="r.tipo == 'b/p'">{{r.costo | currency}}</td>
 									</tr ng-repeat-end>
 								</tbody>
 

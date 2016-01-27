@@ -16,16 +16,16 @@ module.exports = {
             unique:'true'
         },
         cantidad:{
-            type:'string',
+            type:'integer',
             required:'true'
         },
         id:{
-            type:'string',
+            type:'integer',
             required:'true',
             unique:'true'
         },
         precio:{
-            type:'string',
+            type:'float',
             required:'true'
         },
         medicion:{
@@ -33,7 +33,7 @@ module.exports = {
             required:'true'
         },
         pesopza:{
-            type:'string'
+            type:'integer'
         }
     }
 };

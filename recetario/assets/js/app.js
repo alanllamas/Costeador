@@ -194,7 +194,7 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 						costoTotal = 0;
 					for (var i = 0; i < $scope.receta.ingredientes.length; i++) {
 
-							costo += $scope.receta.ingredientes[i].precio
+							costo = $scope.receta.ingredientes[i].precio
 							costoTotal += costo
 
 					};
@@ -257,5 +257,6 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 		$scope.goNext = function (hash) {
 			$location.url(hash);
 		};
+
 
 	});
