@@ -121,7 +121,7 @@
 								</thead>
 
 								<tbody>
-									<tr ng-repeat="materia in materias | orderBy:'+nombre':sortReverse | filter:busqueda" >
+									<tr ng-repeat="materia in materias | orderBy:'+nombre':sortReverse | filter:{nombre: busqueda}" >
 
 										<td>{{materia.nombre}}</td>
 										<td>{{materia.cantidad + " " + materia.medicion}}</td>
@@ -303,7 +303,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr ng-repeat="r in recetas | orderBy:'+r.nombre':sortReverse | filter:busqueda" >
+									<tr ng-repeat="r in recetas | orderBy:'+r.nombre':sortReverse | filter:{nombre: busqueda}" >
 										<td ng-if="r.tipo == 'preparacion'">{{r.nombre}}</td>
 										<td ng-if="r.tipo == 'preparacion'">{{r.cantidad + " gr"}}</td>
 										<td ng-if="r.tipo == 'preparacion'">{{r.costo | currency}}</td>
@@ -332,7 +332,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr ng-repeat="r in recetas | orderBy:'+nombre':sortReverse | filter:busquedab" >
+									<tr ng-repeat="r in recetas | orderBy:'+nombre':sortReverse | filter:{nombre: busquedab}" >
 										<td ng-if="r.tipo == 'base'">{{r.nombre}}</td>
 										<td ng-if="r.tipo == 'base'">{{r.cantidad + 'gr'}}</td>
 										<td ng-if="r.tipo == 'base'">{{r.costo | currency}}</td>
