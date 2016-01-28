@@ -97,6 +97,7 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 			$scope.recetas = data.data;
 
 		})
+		$scope.base;
 		$scope.ingrediente = "";
 		$scope.cantidad2 = 0;
 		$scope.medicion2 = "";
@@ -107,33 +108,47 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 		$scope.receta.costo = 0;
 	 	$scope.receta.cantidad = 0;
 		$scope.receta.tipo = "";
+		$scope.receta.base = {};
 		// agrega un ingrediente al array receta
 		$('#agregarIngrediente').click(function() {
 			ing = $scope.receta.ingredientes;
-			if ($scope.ingrediente && $scope.cantidad2  !== "") {
+			if ($scope.ingrediente && $scope.cantidad2  !== "" || $scope.base != '') {
 
 				$scope.ingre = {};
 				$scope.ingre.id = $scope.receta.ingredientes.length +1 ;
-				$scope.ingre.nombre = $scope.ingrediente.nombre;
-				$scope.ingre.cantidad = $scope.cantidad2;
-				$scope.ingre.medicion = $scope.ingrediente.medicion;
+				if ($scope.base != '') {
 
-				// si hay un peso por pieza lo agrega
+					$scope.receta.base = $scope.base;
+					$scope.ingre.nombre = $scope.base.nombre;
+					$scope.ingre.cantidad = $scope.base.cantidad;
+					$scope.ingre.medicion = 'gr';
+					$scope.ingre.precio = $scope.base.costo;
+					$scope.base = "";
+					
 
-				if ($scope.ingrediente.pesopza) {
-					$scope.ingre.pesopza = $scope.ingrediente.pesopza;
-				};
-				// fin
+				}else {
 
-				// obtiene el precio segun la cantidad del producto
-				$scope.ingre.precio = function () {
+					$scope.ingre.nombre = $scope.ingrediente.nombre;
+					$scope.ingre.cantidad = $scope.cantidad2;
+					$scope.ingre.medicion = $scope.ingrediente.medicion;
 
-					precio = $scope.ingre.cantidad * $scope.ingrediente.precio / $scope.ingrediente.cantidad;
+					// si hay un peso por pieza lo agrega
 
-					return precio;
+					if ($scope.ingrediente.pesopza) {
+						$scope.ingre.pesopza = $scope.ingrediente.pesopza;
+					};
+					// fin
+					// obtiene el precio segun la cantidad del producto
+					$scope.ingre.precio = function () {
 
-				}();
-				// fin
+						precio = $scope.ingre.cantidad * $scope.ingrediente.precio / $scope.ingrediente.cantidad;
+
+						return precio;
+
+					}();
+					// fin
+				}
+
 
 				// agrega el ingrediente al array de ingredientes en el objeto receta y evita que haya entradas repetidas
 				if ($scope.receta.length == 0) {
@@ -161,9 +176,6 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 
 	    		};
 	    		// fin
-	    		// le da un id a la receta
-		    	$scope.receta.id = $scope.recetas.length + 1 ;
-
 				//suma la cantidad total de la receta
 
 				$scope.receta.cantidad = (function(){
@@ -204,11 +216,15 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 				// fin
 			};
 		});
+		// fin
 
 	    // evita que haya entradas iguales y las agrega al array recetas
 
 	    $('#agregarReceta').click(function() {
-			console.log($scope.receta);
+
+			// le da un id a la receta
+			$scope.receta.id = $scope.recetas.length + 1 ;
+			//
 
 			if ($scope.recetas.length == 0) {
 				$http.post("http://localhost:1337/recetas", $scope.receta);
@@ -256,6 +272,9 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 		});
 		$scope.goNext = function (hash) {
 			$location.url(hash);
+		};
+		$scope.baseOrBoth = function(receta){
+		    return receta.tipo == 'base' || receta.tipo == 'b/p';
 		};
 
 
