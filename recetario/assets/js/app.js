@@ -1,29 +1,4 @@
-var app = angular.module('myApp', ['ngRoute','ngResource'])
-	// .config(function ($routeProvider, $locationProvider) {
-	// 	$routeProvider
-	// 		.when('/', {
-	// 			redirectTo: function(){
-	// 				return '/materias'
-	// 			}
-	// 		})
-	// 		.when('/materias',{
-	// 			controller: 'MateriasController',
-	// 			templateUrl: 'views/materiaprima.html'
-	// 		})
-	// 		.when('/nuevareceta',{
-	// 			controller: 'NuevaRecetaController',
-	// 			templateUrl: 'views/nuevareceta.html'
-	// 		})
-	// 		.when('/recetas' ,{
-	// 			controller: 'myCtrl',
-	// 			templateUrl: 'views/recetario.html'
-	// 		});
-	// 	$locationProvider.html5Mode(true);
-	//
-	// })
-	;
-
-
+var app = angular.module('myApp', ['ngRoute','ngResource','ngTablescroll']);
 
 	app.controller('MateriasController', function ($scope, $rootScope, $location, $http) {
 
@@ -109,14 +84,16 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 	 	$scope.receta.cantidad = 0;
 		$scope.receta.tipo = "";
 		$scope.receta.base = {};
+		$scope.receta.medicion;
 		// agrega un ingrediente al array receta
 		$('#agregarIngrediente').click(function() {
 			ing = $scope.receta.ingredientes;
-			if ($scope.ingrediente && $scope.cantidad2  !== "" || $scope.base != '') {
+			console.log($scope.base);
+			if ($scope.ingrediente !== "" && $scope.cantidad2  !== "" || $scope.base != '') {
 
 				$scope.ingre = {};
 				$scope.ingre.id = $scope.receta.ingredientes.length +1 ;
-				if ($scope.base != '') {
+				if ($scope.base != undefined ) {
 
 					$scope.receta.base = $scope.base;
 					$scope.ingre.nombre = $scope.base.nombre;
@@ -124,9 +101,9 @@ var app = angular.module('myApp', ['ngRoute','ngResource'])
 					$scope.ingre.medicion = 'gr';
 					$scope.ingre.precio = $scope.base.costo;
 					$scope.base = "";
-					
 
-				}else {
+
+				}else if ($scope.ingrediente !== "" && $scope.cantidad2  !== "" ){
 
 					$scope.ingre.nombre = $scope.ingrediente.nombre;
 					$scope.ingre.cantidad = $scope.cantidad2;

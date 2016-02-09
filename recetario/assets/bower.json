@@ -22,6 +22,8 @@
     "jquery": "~2.2.0",
     "angular-route": "~1.4.8",
     "angular-resource": "~1.4.8",
-    "font-awesome": "~4.5.0"
+    "font-awesome": "~4.5.0",
+    "angular-ui": "~0.4.0",
+    "angular-tablescroll": "~1.0.1"
   }
 }

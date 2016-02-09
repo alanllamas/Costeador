@@ -17,3 +17,20 @@ a.nostyle:visited {
     color: inherit;
     cursor: auto;
 }
+#tablaMat tr, #tablaRec tr, #tablaBas tr {
+width: 100%;
+display: inline-table;
+}
+#tablaMat td, #tablaRec td, #tablaBas td {
+	width: 33%;
+
+}
+#tablaMat, #tablaRec, #tablaBas {
+ height:300px;
+}
+#tablaMat tbody, #tablaRec tbody, #tablaBas tbody{
+  overflow-y: scroll;
+  height: 200px;
+  width: 100%;
+  position: absolute;
+}
